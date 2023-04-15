@@ -77,6 +77,15 @@ The code given is structured as follows. Feel free however to modify the structu
         Entry point for HTTP REST API. This is where the routes are defined.
 ```
 
+#### Module Dependencies
+
+```mermaid
+graph LR;
+    R["rest"]-->C["core"] & M["models"];
+    C --> M & D["data"];
+    D --> M;
+    A["App"] --> C & M & D & R
+```
 ### Main Libraries and dependencies
 * [Exposed](https://github.com/JetBrains/Exposed) - DSL for type-safe SQL
 * [Javalin](https://javalin.io/) - Simple web framework (for REST)

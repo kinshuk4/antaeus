@@ -49,6 +49,14 @@ class AntaeusDal(private val db: Database) {
         return this.fetchInvoices(status = InvoiceStatus.PENDING)
     }
 
+    fun updateInvoiceStatusById(id: Int, newStatus: InvoiceStatus) {
+        transaction(db) {
+            InvoiceTable.update ({ InvoiceTable.id.eq(id) }) {
+                it[status] = newStatus.name
+            }
+        }
+    }
+
     fun createInvoice(amount: Money, customer: Customer, status: InvoiceStatus = InvoiceStatus.PENDING): Invoice? {
         val id = transaction(db) {
             // Insert the invoice and returns its new id.

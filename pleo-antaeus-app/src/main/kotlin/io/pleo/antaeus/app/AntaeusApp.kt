@@ -3,8 +3,6 @@
     Configures the database and sets up the REST web service.
  */
 
-@file:JvmName("AntaeusApp")
-
 package io.pleo.antaeus.app
 
 import getPaymentProvider
@@ -15,15 +13,22 @@ import io.pleo.antaeus.data.AntaeusDal
 import io.pleo.antaeus.data.CustomerTable
 import io.pleo.antaeus.data.InvoiceTable
 import io.pleo.antaeus.rest.AntaeusRest
+import io.pleo.antaeus.scheduler.FirstOfMonthBillScheduler
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.scheduling.annotation.EnableScheduling
 import setupInitialData
 import java.io.File
 import java.sql.Connection
+
+@SpringBootApplication
+@EnableScheduling
+open class AntaeusApp
 
 fun main() {
     // The tables to create in the database.
@@ -62,6 +67,7 @@ fun main() {
 
     // This is _your_ billing service to be included where you see fit
     val billingService = BillingService(paymentProvider = paymentProvider, invoiceService = invoiceService)
+    val scheduler = FirstOfMonthBillScheduler(billingService)
 
     // Create REST web service
     AntaeusRest(

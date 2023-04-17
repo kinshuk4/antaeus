@@ -7,6 +7,9 @@ kotlinProject()
 
 dataLibs()
 
+application {
+    mainClassName = "io.pleo.antaeus.app.AntaeusApp"
+}
 dependencies {
     implementation(project(":pleo-antaeus-data"))
     implementation(project(":pleo-antaeus-rest"))

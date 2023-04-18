@@ -1,4 +1,4 @@
-package io.pleo.antaeus.scheduler
+package io.pleo.antaeus.factory
 
 import io.pleo.antaeus.core.services.BillingService
 import mu.KotlinLogging
@@ -10,7 +10,7 @@ private const val cronExpr = "*/5 * * * *"
 class FirstOfMonthBillScheduler(private val billingService: BillingService) {
     fun start() {
         logger.info("Requesting the bills on 1st of the month")
-        Scheduler.createScheduledTask(cronExpr, func = {
+        SchedulerFactory.createScheduledTask(cronExpr, func = {
             billingService.billInvoices();
         })
 

@@ -1,4 +1,4 @@
-package io.pleo.antaeus.scheduler
+package io.pleo.antaeus.factory
 
 import dev.inmo.krontab.doInfinityTz
 import kotlinx.coroutines.CoroutineScope
@@ -9,7 +9,7 @@ import java.util.concurrent.Executors
 
 private val logger = KotlinLogging.logger {}
 
-class Scheduler {
+class SchedulerFactory {
     companion object {
         fun createScheduledTask(cronExpr: String, func: () -> Unit) {
             val dispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()

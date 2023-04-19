@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     base
-    kotlin("jvm") version "1.6.10" apply false
+    kotlin("jvm") version "1.6.21" apply false
 }
 
 allprojects {
@@ -21,4 +21,11 @@ allprojects {
     tasks.withType<Test> {
         useJUnitPlatform()
     }
+
+    tasks.withType<Test> {
+        this.testLogging {
+            this.showStandardStreams = true
+        }
+    }
+
 }

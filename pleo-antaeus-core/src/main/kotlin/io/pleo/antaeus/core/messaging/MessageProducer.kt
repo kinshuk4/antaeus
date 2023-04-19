@@ -1,14 +1,11 @@
 package io.pleo.antaeus.core.messaging
 
 import io.pleo.antaeus.core.exceptions.InvalidTopicException
-import io.pleo.antaeus.factory.ProducerFactory
+import io.pleo.antaeus.consumer.ProducerFactory
 import mu.KotlinLogging
 import org.apache.kafka.clients.producer.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.common.serialization.IntegerSerializer
-import org.apache.kafka.common.serialization.Serializer
 import java.util.*
-import kotlin.reflect.KClass
 
 private val logger = KotlinLogging.logger {}
 

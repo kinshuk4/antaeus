@@ -17,4 +17,5 @@ dependencies {
     implementation(project(":pleo-antaeus-models"))
     implementation(project(":pleo-antaeus-scheduler"))
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
+    implementation(project(":pleo-antaeus-messaging"))
 }

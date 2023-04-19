@@ -8,6 +8,8 @@
 package io.pleo.antaeus.app
 
 import getPaymentProvider
+import io.pleo.antaeus.consumer.FirstOfMonthBillScheduler
+import io.pleo.antaeus.consumer.PendingInvoicesConsumer
 import io.pleo.antaeus.core.messaging.InvoiceProducer
 import io.pleo.antaeus.core.messaging.MessageProducer
 import io.pleo.antaeus.core.services.BillingService
@@ -17,7 +19,6 @@ import io.pleo.antaeus.data.AntaeusDal
 import io.pleo.antaeus.data.CustomerTable
 import io.pleo.antaeus.data.InvoiceTable
 import io.pleo.antaeus.rest.AntaeusRest
-import io.pleo.antaeus.factory.FirstOfMonthBillScheduler
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.StdOutSqlLogger
@@ -27,6 +28,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import setupInitialData
 import java.io.File
 import java.sql.Connection
+import java.util.concurrent.CountDownLatch
 
 fun main() {
     // The tables to create in the database.
@@ -66,14 +68,36 @@ fun main() {
     // This is _your_ billing service to be included where you see fit
     val billingService = BillingService(paymentProvider = paymentProvider, invoiceService = invoiceService)
 
-    val messageProducer = MessageProducer("localhost:9092")
+    val bootstrapServer = "localhost:9092"
+    val messageProducer = MessageProducer(bootstrapServer)
     val invoiceProducer = InvoiceProducer(messageProducer = messageProducer)
 
     FirstOfMonthBillScheduler(invoiceService = invoiceService, messageProducer = messageProducer).start();
+
+    val latch = CountDownLatch(1)
+    val consumerRunnable = PendingInvoicesConsumer(
+        bootstrapServer = bootstrapServer,
+        countDownLatch = latch,
+        billingService = billingService,
+        maxRetries = 3
+    )
+
+    val thread = Thread(consumerRunnable)
+    thread.start()
+
 
     // Create REST web service
     AntaeusRest(
         invoiceService = invoiceService,
         customerService = customerService
     ).run()
+
+    Runtime.getRuntime().addShutdownHook(Thread {
+        consumerRunnable.shutdown();
+        try {
+            latch.await()
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+    })
 }

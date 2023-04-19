@@ -22,5 +22,13 @@ class BillingService(
         }
     }
 
+    fun billInvoice(id: Int) {
+        val invoice = invoiceService.fetch(id)
+
+        if (paymentProvider.charge(invoice)) {
+            invoiceService.updateStatusById(id, InvoiceStatus.PAID)
+        }
+    }
+
 //    fun fetchPending()
 }

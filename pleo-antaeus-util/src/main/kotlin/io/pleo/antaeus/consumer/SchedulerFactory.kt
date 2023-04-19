@@ -1,4 +1,4 @@
-package io.pleo.antaeus.factory
+package io.pleo.antaeus.consumer
 
 import dev.inmo.krontab.doInfinityTz
 import kotlinx.coroutines.CoroutineScope

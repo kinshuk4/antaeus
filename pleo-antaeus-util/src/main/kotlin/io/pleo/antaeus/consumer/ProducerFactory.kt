@@ -1,11 +1,9 @@
-package io.pleo.antaeus.factory
+package io.pleo.antaeus.consumer
 
 import mu.KotlinLogging
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.Producer
-import org.apache.kafka.common.serialization.Serializer
 import java.util.*
-import kotlin.reflect.KClass
 
 private val logger = KotlinLogging.logger {}
 

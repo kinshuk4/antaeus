@@ -1,8 +1,7 @@
-package io.pleo.antaeus.factory
+package io.pleo.antaeus.consumer
 
 import io.pleo.antaeus.core.messaging.MessageProducer
 import io.pleo.antaeus.core.messaging.Topics
-import io.pleo.antaeus.core.services.BillingService
 import io.pleo.antaeus.core.services.InvoiceService
 import mu.KotlinLogging
 

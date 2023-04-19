@@ -5,9 +5,9 @@ import org.apache.kafka.common.serialization.IntegerSerializer
 import org.apache.kafka.common.serialization.StringSerializer
 
 class InvoiceProducer(messageProducer: MessageProducer) {
-    private var producer: Producer<Integer, String>
+    private var producer: Producer<Int, String>
     init {
-        producer = messageProducer.createProducer<Integer, String> (Topics.pendingInvoices, IntegerSerializer::class.java, StringSerializer::class.java)
+        producer = messageProducer.createProducer<Int, String> (Topics.pendingInvoices, IntegerSerializer::class.java, StringSerializer::class.java)
     }
 
 }

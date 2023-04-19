@@ -1,6 +1,8 @@
 package io.pleo.antaeus.core.services
 
+import io.pleo.antaeus.core.exceptions.InvoicePaymentFailed
 import io.pleo.antaeus.core.external.PaymentProvider
+import io.pleo.antaeus.models.Invoice
 import io.pleo.antaeus.models.InvoiceStatus
 import mu.KotlinLogging
 
@@ -11,24 +13,17 @@ class BillingService(
     private val invoiceService: InvoiceService
 ) {
     // DONE - Add code e.g. here
-    fun billInvoices() {
-        val pendingInvoices = invoiceService.fetchPending()
-        logger.info("Paying bills")
-        pendingInvoices.forEach {
 
-            if (paymentProvider.charge(it)) {
-                invoiceService.updateStatusById(it.id, InvoiceStatus.PAID)
-            }
-        }
-    }
-
-    fun billInvoice(id: Int) {
+    fun billInvoice(id: Int): Invoice {
+        logger.info("fetching invoice" + id)
         val invoice = invoiceService.fetch(id)
-
+        logger.error("fetched invoice" + id)
+        logger.error(paymentProvider.charge(invoice).toString())
         if (paymentProvider.charge(invoice)) {
-            invoiceService.updateStatusById(id, InvoiceStatus.PAID)
+            logger.info("doing update xxxx")
+            return invoiceService.updateStatusById(id, InvoiceStatus.PAID)
         }
+        throw InvoicePaymentFailed(id)
     }
 
-//    fun fetchPending()
 }

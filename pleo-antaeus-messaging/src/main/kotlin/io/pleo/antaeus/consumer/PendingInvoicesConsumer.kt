@@ -25,10 +25,10 @@ class PendingInvoicesConsumer(
     private val maxRetries: Int
 ) :
     Runnable {
-    private var consumer: Consumer<Integer, String>
+    private var consumer: Consumer<Int, String>
 
     init {
-        consumer = ConsumerFactory.createConsumer<Integer, String>(
+        consumer = ConsumerFactory.createConsumer<Int, String>(
             bootstrapServer,
             IntegerDeserializer::class.java,
             StringDeserializer::class.java,

@@ -19,7 +19,7 @@ class MessageProducer(private val bootStrapServer: String) {
         valueSerializer: Any
     ): Producer<K, V> {
         val producer =
-            ProducerFactory.createProducer<K, V>(bootStrapServer, keySerializer as Object, valueSerializer as Object)
+            ProducerFactory.createProducer<K, V>(bootStrapServer, keySerializer, valueSerializer)
         val castedProducer = producer as Producer<Any, Any>
         hashMap.put(topicName, castedProducer);
         return producer

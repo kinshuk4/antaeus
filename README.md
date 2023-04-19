@@ -95,3 +95,8 @@ graph LR;
 * [Sqlite3](https://sqlite.org/index.html) - Database storage engine
 
 Happy hacking 😁!
+
+
+kafka-topics --create --bootstrap-server localhost:29092 --replication-factor 1 --partitions 1 --topic test-topic1
+kafka-console-producer --broker-list localhost:29092 --topic test-topic1
+kafka-console-consumer --bootstrap-server localhost:29092 --topic test-topic1 --from-beginning --partition 0

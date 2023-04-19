@@ -5,23 +5,27 @@ import io.pleo.antaeus.factory.ProducerFactory
 import mu.KotlinLogging
 import org.apache.kafka.clients.producer.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
+import org.apache.kafka.common.serialization.IntegerSerializer
 import org.apache.kafka.common.serialization.Serializer
 import java.util.*
+import kotlin.reflect.KClass
 
 private val logger = KotlinLogging.logger {}
 
-class MessageProducer() {
+class MessageProducer(private val bootStrapServer: String) {
 
-    var hashMap: HashMap<String, Producer<Any, Any>> = HashMap<String, Producer<Any, Any>>()
+    private val hashMap: HashMap<String, Producer<Any, Any>> = HashMap<String, Producer<Any, Any>>()
 
     fun <K : Any, V : Any> createProducer(
-        topicName: String, bootStrapServer: String,
-        keySerializer: Serializer<K>,
-        valueSerializer: Serializer<V>
-    ) {
+        topicName: String,
+        keySerializer: Any,
+        valueSerializer: Any
+    ): Producer<K, V> {
         val producer =
-            ProducerFactory.createProducer(bootStrapServer, keySerializer, valueSerializer) as Producer<Any, Any>
-        hashMap.put(topicName, producer);
+            ProducerFactory.createProducer<K, V>(bootStrapServer, keySerializer as Object, valueSerializer as Object)
+        val castedProducer = producer as Producer<Any, Any>
+        hashMap.put(topicName, castedProducer);
+        return producer
     }
 
     fun <K, V> sendMessage(topicName: String, key: K, message: V) {

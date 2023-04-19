@@ -5,6 +5,7 @@ import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.Producer
 import org.apache.kafka.common.serialization.Serializer
 import java.util.*
+import kotlin.reflect.KClass
 
 private val logger = KotlinLogging.logger {}
 
@@ -13,8 +14,8 @@ class ProducerFactory {
     companion object {
         fun <K, V> createProducer(
             bootStrapServer: String,
-            keySerializer: Serializer<K>,
-            valueSerializer: Serializer<V>
+            keySerializer: Object,
+            valueSerializer: Object
         ): Producer<K, V> {
             val props = Properties()
             props["bootstrap.servers"] = bootStrapServer

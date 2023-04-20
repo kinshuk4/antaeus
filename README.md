@@ -31,23 +31,30 @@ Open the project using your favorite text editor. If you are using IntelliJ, you
 
 There are 2 options for running Anteus. You either need libsqlite3 or docker. Docker is easier but requires some docker knowledge. We do recommend docker though.
 
-*Running Natively*
+#### Running Natively
 
 Native java with sqlite (requires libsqlite3):
 
 If you use homebrew on MacOS `brew install sqlite`.
 
 ```
+docker-compose up kafka
 ./gradlew run
 ```
 
-*Running through docker*
+#### Running through docker
 
 Install docker for your platform
 
 ```
+docker-compose up kafka
 docker build -t antaeus
 docker run antaeus
+```
+
+OR do
+```
+docker-compose up antaeus --build
 ```
 
 ### App Structure

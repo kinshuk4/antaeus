@@ -1,5 +1,6 @@
 package io.pleo.antaeus.core.services
 
+import io.pleo.antaeus.core.exceptions.InvoiceNotFoundException
 import io.pleo.antaeus.core.exceptions.InvoicePaymentFailed
 import io.pleo.antaeus.core.external.PaymentProvider
 import io.pleo.antaeus.models.Invoice
@@ -16,24 +17,23 @@ class BillingService(
 
     fun billInvoice(id: Int): Invoice {
         logger.info("Billing the invoice '$id'")
-        var isSuccess = false
-        var failureReason: java.lang.Exception? = null
+
         try {
             val invoice = invoiceService.fetch(id)
-            isSuccess = paymentProvider.charge(invoice)
+            val isSuccess = paymentProvider.charge(invoice)
+            if (isSuccess) {
+                return invoiceService.updateStatusById(id, InvoiceStatus.PAID)
+            } else {
+                throw InvoicePaymentFailed(id)
+            }
         } catch (ex: Exception) {
-            failureReason = ex
-        }
+            // if exception is InvoiceNotFoundException, we cannot save in DB
+            if (ex !is InvoiceNotFoundException) {
+                invoiceService.updateStatusById(id, InvoiceStatus.FAILED, ex.toString())
+            }
 
-        if (isSuccess) {
-            return invoiceService.updateStatusById(id, InvoiceStatus.PAID)
+            throw ex
         }
-        if (failureReason == null) {
-            failureReason = InvoicePaymentFailed(id)
-        }
-        invoiceService.updateStatusById(id, InvoiceStatus.FAILED, failureReason.toString())
-
-        throw failureReason
     }
 
 }

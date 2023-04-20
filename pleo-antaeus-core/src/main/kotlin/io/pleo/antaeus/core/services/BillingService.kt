@@ -15,11 +15,11 @@ class BillingService(
     // DONE - Add code e.g. here
 
     fun billInvoice(id: Int): Invoice {
-        logger.info("Billing the invoice" + id)
-        val invoice = invoiceService.fetch(id)
+        logger.info("Billing the invoice '$id'")
         var isSuccess = false
         var failureReason: java.lang.Exception? = null
         try {
+            val invoice = invoiceService.fetch(id)
             isSuccess = paymentProvider.charge(invoice)
         } catch (ex: Exception) {
             failureReason = ex

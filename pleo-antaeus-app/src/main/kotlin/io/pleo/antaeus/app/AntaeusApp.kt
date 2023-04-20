@@ -82,6 +82,8 @@ fun main() {
         maxRetries = 3
     )
 
+    consumerRunnable.subscribe()
+
     val thread = Thread(consumerRunnable)
     thread.start()
 

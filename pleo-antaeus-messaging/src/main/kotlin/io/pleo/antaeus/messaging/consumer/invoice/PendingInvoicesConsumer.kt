@@ -33,8 +33,10 @@ class PendingInvoicesConsumer(
             StringDeserializer::class.java,
             "pending-invoice-1"
         )
-        consumer.subscribe(mutableListOf(Topics.pendingInvoices))
+    }
 
+    fun subscribe() {
+        consumer.subscribe(mutableListOf(Topics.pendingInvoices))
     }
 
     override fun run() {
@@ -42,41 +44,9 @@ class PendingInvoicesConsumer(
             while (true) {
                 val records = consumer.poll(Duration.of(1000L, ChronoUnit.MILLIS))
 
-
                 for (i in records) {
-                    var numRetries = 0
-                    var isError = true
-                    while (isError && numRetries < maxRetries) {
-
-                        numRetries++
-                        try {
-                            billingService.billInvoice(i.value().toInt())
-                            isError = false
-                        } catch (ex: Exception) {
-                            when (ex) {
-                                is NetworkException -> {
-                                    logger.info("Unable to process invoice '$i' due to error: '$ex'. Attempt: '$numRetries'")
-                                    continue
-                                }
-                                is CurrencyMismatchException, is CustomerNotFoundException -> {
-                                    logger.error("Unable to process invoice '$i' due to error: '$ex'")
-                                    break
-                                }
-                                else -> {
-                                    logger.error("Unable to process invoice '$i' due to generic error: '$ex'")
-                                    break
-                                }
-                            }
-
-                        }
-
-                    }
-                    if (isError) {
-                        logger.error("Failed to process invoice '$i'. Moving it to dead letter queue")
-                        // write to dead letter queue
-                    }
-
-                    logger.info("Key ${i.key()}, Partition ${i.partition()}, Value ${i.value()}, Offset ${i.offset()}")
+                    logger.info("Processing invoice with Key ${i.key()}, Partition ${i.partition()}, Value ${i.value()}, Offset ${i.offset()}")
+                    handleInvoice(i.value().toInt())
                 }
             }
         } catch (e: WakeupException) {
@@ -86,6 +56,43 @@ class PendingInvoicesConsumer(
             countDownLatch.countDown()
         }
     }
+
+    fun handleInvoice(i: Int) {
+        var numRetries = 0
+        var isError = true
+        while (isError && numRetries < maxRetries) {
+
+            numRetries++
+            try {
+                billingService.billInvoice(i)
+                isError = false
+            } catch (ex: Exception) {
+                when (ex) {
+                    is NetworkException -> {
+                        logger.info("Unable to process invoice '$i' due to error: '$ex'. Attempt: '$numRetries'")
+                        continue
+                    }
+                    is CurrencyMismatchException, is CustomerNotFoundException -> {
+                        logger.error("Unable to process invoice '$i' due to error: '$ex'")
+                        break
+                    }
+                    else -> {
+                        logger.error("Unable to process invoice '$i' due to generic error: '$ex'")
+                        break
+                    }
+                }
+
+            }
+
+        }
+        if (isError) {
+            logger.error("Failed to process invoice '$i'. Moving it to dead letter queue")
+            // write to dead letter queue
+        }
+
+
+    }
+
 
     fun shutdown() {
         consumer.wakeup()

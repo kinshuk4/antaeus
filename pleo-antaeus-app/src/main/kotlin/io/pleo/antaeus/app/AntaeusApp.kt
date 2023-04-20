@@ -8,7 +8,6 @@
 package io.pleo.antaeus.app
 
 import getPaymentProvider
-import io.pleo.antaeus.util.factory.FirstOfMonthBillScheduler
 import io.pleo.antaeus.util.factory.PendingInvoicesConsumer
 import io.pleo.antaeus.core.messaging.InvoiceProducer
 import io.pleo.antaeus.core.messaging.MessageProducer
@@ -19,6 +18,7 @@ import io.pleo.antaeus.data.AntaeusDal
 import io.pleo.antaeus.data.CustomerTable
 import io.pleo.antaeus.data.InvoiceTable
 import io.pleo.antaeus.rest.AntaeusRest
+import io.pleo.antaeus.scheduler.FirstOfMonthBillScheduler
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.StdOutSqlLogger

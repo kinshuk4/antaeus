@@ -1,4 +1,4 @@
-package io.pleo.antaeus.util.factory
+package io.pleo.antaeus.scheduler
 
 import io.pleo.antaeus.core.messaging.MessageProducer
 import io.pleo.antaeus.core.messaging.Topics

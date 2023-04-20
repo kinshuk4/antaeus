@@ -1,10 +1,11 @@
-package io.pleo.antaeus.util.factory
+package io.pleo.antaeus.messaging.consumer.invoice
 
 import io.pleo.antaeus.core.exceptions.CurrencyMismatchException
 import io.pleo.antaeus.core.exceptions.CustomerNotFoundException
 import io.pleo.antaeus.core.exceptions.NetworkException
 import io.pleo.antaeus.core.messaging.Topics
 import io.pleo.antaeus.core.services.BillingService
+import io.pleo.antaeus.util.factory.ConsumerFactory
 import mu.KotlinLogging
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.common.errors.WakeupException

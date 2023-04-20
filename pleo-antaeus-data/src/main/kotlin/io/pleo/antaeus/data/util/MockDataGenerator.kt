@@ -1,4 +1,4 @@
-package io.pleo.antaeus.core.util
+package io.pleo.antaeus.data.util
 
 import io.pleo.antaeus.models.Currency
 import io.pleo.antaeus.models.Invoice
@@ -6,7 +6,7 @@ import io.pleo.antaeus.models.InvoiceStatus
 import io.pleo.antaeus.models.Money
 import java.math.BigDecimal
 
-class TestUtil {
+class MockDataGenerator {
     companion object {
         fun createInvoice(
             id: Int = 1,

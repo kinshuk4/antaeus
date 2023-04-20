@@ -3,7 +3,7 @@ package io.pleo.antaeus.core.services
 import io.mockk.every
 import io.mockk.mockk
 import io.pleo.antaeus.core.exceptions.InvoiceNotFoundException
-import io.pleo.antaeus.core.util.TestUtil.Companion.createInvoice
+import io.pleo.antaeus.data.util.MockDataGenerator.Companion.createInvoice
 import io.pleo.antaeus.data.AntaeusDal
 import io.pleo.antaeus.models.Invoice
 import io.pleo.antaeus.models.InvoiceStatus

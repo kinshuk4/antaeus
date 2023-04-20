@@ -1,7 +1,7 @@
 package io.pleo.antaeus.core.messaging
 
 import io.pleo.antaeus.core.exceptions.InvalidTopicException
-import io.pleo.antaeus.consumer.ProducerFactory
+import io.pleo.antaeus.util.factory.ProducerFactory
 import mu.KotlinLogging
 import org.apache.kafka.clients.producer.Producer
 import org.apache.kafka.clients.producer.ProducerRecord

@@ -8,8 +8,8 @@
 package io.pleo.antaeus.app
 
 import getPaymentProvider
-import io.pleo.antaeus.consumer.FirstOfMonthBillScheduler
-import io.pleo.antaeus.consumer.PendingInvoicesConsumer
+import io.pleo.antaeus.util.factory.FirstOfMonthBillScheduler
+import io.pleo.antaeus.util.factory.PendingInvoicesConsumer
 import io.pleo.antaeus.core.messaging.InvoiceProducer
 import io.pleo.antaeus.core.messaging.MessageProducer
 import io.pleo.antaeus.core.services.BillingService

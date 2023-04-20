@@ -1,4 +1,4 @@
-package io.pleo.antaeus.consumer
+package io.pleo.antaeus.util.factory
 
 import io.pleo.antaeus.core.exceptions.CurrencyMismatchException
 import io.pleo.antaeus.core.exceptions.CustomerNotFoundException

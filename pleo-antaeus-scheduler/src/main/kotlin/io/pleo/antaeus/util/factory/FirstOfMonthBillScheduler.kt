@@ -1,4 +1,4 @@
-package io.pleo.antaeus.consumer
+package io.pleo.antaeus.util.factory
 
 import io.pleo.antaeus.core.messaging.MessageProducer
 import io.pleo.antaeus.core.messaging.Topics

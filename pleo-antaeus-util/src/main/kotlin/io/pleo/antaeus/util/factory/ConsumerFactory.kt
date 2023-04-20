@@ -1,4 +1,4 @@
-package io.pleo.antaeus.consumer
+package io.pleo.antaeus.util.factory
 
 import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.consumer.ConsumerConfig

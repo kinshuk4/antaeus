@@ -4,6 +4,8 @@ plugins {
 
 kotlinProject()
 
+dataLibs()
+
 dependencies {
 
     testImplementation(project(":pleo-antaeus-data"))
@@ -11,8 +13,5 @@ dependencies {
     api(project(":pleo-antaeus-models"))
     api(project(":pleo-antaeus-util"))
 
-
-//    implementation(project(":pleo-antaeus-core"))
-//    implementation(project(":pleo-antaeus-models"))
-//    implementation(project(":pleo-antaeus-util"))
+    testImplementation ("com.github.stefanbirkner:system-lambda:1.2.0")
 }

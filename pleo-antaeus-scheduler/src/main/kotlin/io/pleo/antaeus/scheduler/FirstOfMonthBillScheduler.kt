@@ -18,9 +18,9 @@ class FirstOfMonthBillScheduler(private val invoiceService: InvoiceService, priv
         })
     }
     fun requestToPayInvoice() {
-        logger.info("Requesting the bills on 1st of the month")
+        logger.error("Requesting the bills on 1st of the month")
         invoiceService.fetchPending().map { invoice ->
-            logger.info("Requesting invoice '$invoice.id")
+            logger.error("Requesting invoice '$invoice.id")
             messageProducer.sendMessage(Topics.pendingInvoices, invoice.id, invoice.id.toString())
             invoiceService.updateStatusById(invoice.id, InvoiceStatus.REQUESTED)
         }

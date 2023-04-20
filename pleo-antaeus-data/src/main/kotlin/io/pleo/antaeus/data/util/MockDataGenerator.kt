@@ -13,12 +13,14 @@ class MockDataGenerator {
             customerId: Int = 1,
             value: Long = 100000,
             currency: Currency = Currency.DKK,
-            status: InvoiceStatus = InvoiceStatus.PENDING
+            status: InvoiceStatus = InvoiceStatus.PENDING,
+            errorReason: String = ""
         ) = Invoice(
             id,
             customerId,
             Money(BigDecimal.valueOf(value), currency),
             status,
+            errorReason
         )
     }
 }

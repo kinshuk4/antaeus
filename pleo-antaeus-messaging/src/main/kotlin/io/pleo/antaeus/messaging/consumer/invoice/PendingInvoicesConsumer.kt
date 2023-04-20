@@ -7,12 +7,10 @@ import io.pleo.antaeus.core.messaging.Topics
 import io.pleo.antaeus.core.services.BillingService
 import io.pleo.antaeus.util.factory.ConsumerFactory
 import mu.KotlinLogging
-import org.apache.kafka.clients.consumer.Consumer;
+import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.common.errors.WakeupException
 import org.apache.kafka.common.serialization.IntegerDeserializer
-import org.apache.kafka.common.serialization.IntegerSerializer
 import org.apache.kafka.common.serialization.StringDeserializer
-import org.apache.kafka.common.serialization.StringSerializer
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.CountDownLatch
@@ -57,6 +55,7 @@ class PendingInvoicesConsumer(
                         } catch (ex: Exception) {
                             when (ex) {
                                 is NetworkException -> {
+                                    logger.info("Unable to process invoice '$i' due to error: '$ex'. Attempt: '$numRetries'")
                                     continue
                                 }
                                 is CurrencyMismatchException, is CustomerNotFoundException -> {
@@ -68,8 +67,13 @@ class PendingInvoicesConsumer(
                                     break
                                 }
                             }
+
                         }
 
+                    }
+                    if (isError) {
+                        logger.error("Failed to process invoice '$i'. Moving it to dead letter queue")
+                        // write to dead letter queue
                     }
 
                     logger.info("Key ${i.key()}, Partition ${i.partition()}, Value ${i.value()}, Offset ${i.offset()}")

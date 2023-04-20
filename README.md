@@ -82,9 +82,11 @@ The code given is structured as follows. Feel free however to modify the structu
 ```mermaid
 graph LR;
     R["rest"]-->C["core"] & M["models"];
-    C --> M & D["data"];
+    C --> M & D["data"] & U["Utility"];
     D --> M;
-    A["App"] --> C & M & D & R
+    A["App"] --> C & M & D & R & S["Scheduler"] & K["Messaging"];
+    K --> C & U & D;
+    S --> M & U & D;
 ```
 ### Main Libraries and dependencies
 * [Exposed](https://github.com/JetBrains/Exposed) - DSL for type-safe SQL

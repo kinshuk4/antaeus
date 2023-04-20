@@ -136,7 +136,6 @@ class PendingInvoicesConsumerTest {
             pendingInvoicesConsumer.handleInvoice(singleInvoice.id)
         }
         // then
-        logger.error("999999999" + output)
         assertTrue(output.trim().contains("Billing the invoice '1'"))
         assertTrue(output.trim().contains("InvoicePaymentFailed: Invoice '1' couldnt not be paid"))
         assertTrue(output.trim().contains("Failed to process invoice '1'. Moving it to dead letter queue"))

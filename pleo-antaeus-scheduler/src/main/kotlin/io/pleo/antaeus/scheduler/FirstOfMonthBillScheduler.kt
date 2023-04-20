@@ -8,8 +8,8 @@ import io.pleo.antaeus.util.factory.SchedulerFactory
 import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
-//private const val cronExpr = "0 0 1 * *"
-private const val cronExpr = "*/5 * * * *"
+private const val cronExpr = "0 0 1 * *"
+//private const val cronExpr = "*/5 * * * *" // runs every 5 second
 
 class FirstOfMonthBillScheduler(private val invoiceService: InvoiceService, private val messageProducer: MessageProducer) {
     fun start() {
